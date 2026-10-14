@@ -78,12 +78,13 @@ body {
 
 .app {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 300px 1fr;
   gap: 20px;
-  max-width: 1100px;
-  margin: 24px auto;
+  width: min(96vw, 1800px);
+  margin: 20px auto;
   padding: 0 20px;
-  height: calc(100vh - 160px);
+  height: calc(100vh - 150px);
+  min-height: 560px;
 }
 
 .sidebar {
@@ -113,7 +114,7 @@ body {
 .history-item.active { background: var(--itc-cream); border-color: var(--itc-border); }
 .history-item-title {
   flex: 1;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--itc-ink);
   white-space: nowrap;
   overflow: hidden;
@@ -188,7 +189,7 @@ body {
   cursor: pointer;
 }
 .modal-close:hover { background: #eee7d6; }
-.modal-content { font-size: 15px; line-height: 1.6; }
+.modal-content { font-size: 17px; line-height: 1.65; }
 .starter {
   display: block;
   width: 100%;
@@ -198,7 +199,7 @@ body {
   border-radius: var(--radius);
   padding: 10px 12px;
   margin-bottom: 8px;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
   color: var(--itc-ink);
 }
@@ -230,7 +231,7 @@ body {
   gap: 14px;
 }
 
-.msg { max-width: 75%; padding: 12px 14px; border-radius: 12px; line-height: 1.5; font-size: 14px; white-space: pre-wrap; }
+.msg { max-width: 75%; padding: 14px 18px; border-radius: 12px; line-height: 1.6; font-size: 16px; white-space: pre-wrap; }
 .msg.user { align-self: flex-end; background: var(--itc-green); color: #fff; border-bottom-right-radius: 2px; }
 .msg.assistant {
   align-self: flex-start;
@@ -254,9 +255,9 @@ body {
   margin: 16px 0 8px;
   line-height: 1.3;
 }
-.msg.assistant h1, .modal-content h1 { font-size: 18px; }
-.msg.assistant h2, .modal-content h2 { font-size: 16px; }
-.msg.assistant h3, .modal-content h3 { font-size: 14px; }
+.msg.assistant h1, .modal-content h1 { font-size: 21px; }
+.msg.assistant h2, .modal-content h2 { font-size: 19px; }
+.msg.assistant h3, .modal-content h3 { font-size: 17px; }
 .msg.assistant p, .modal-content p { margin: 8px 0; }
 .msg.assistant ul, .modal-content ul,
 .msg.assistant ol, .modal-content ol { margin: 8px 0; padding-left: 22px; }
@@ -266,7 +267,7 @@ body {
   background: #ece6d5;
   border-radius: 4px;
   padding: 1px 5px;
-  font-size: 13px;
+  font-size: 14px;
 }
 .msg.assistant pre, .modal-content pre {
   background: #ece6d5;
@@ -278,7 +279,7 @@ body {
 .msg.assistant table, .modal-content table {
   border-collapse: collapse;
   margin: 10px 0;
-  font-size: 13px;
+  font-size: 15px;
   width: max-content;
   max-width: 100%;
 }
@@ -309,8 +310,8 @@ body {
   resize: none;
   border: 1px solid var(--itc-border);
   border-radius: var(--radius);
-  padding: 10px 12px;
-  font-size: 14px;
+  padding: 14px 16px;
+  font-size: 16px;
   font-family: inherit;
   max-height: 120px;
 }

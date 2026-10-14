@@ -263,19 +263,34 @@
   // lightweight status endpoint (well under 45s per poll) until it's done.
   async function pollForResult(responseId, pendingEl) {
     const start = Date.now();
+    let consecutiveFailures = 0;
     while (Date.now() - start < POLL_TIMEOUT_MS) {
       await sleep(POLL_INTERVAL_MS);
       const elapsed = Math.round((Date.now() - start) / 1000);
 
-      const token = await getAccessToken();
-      const res = await fetch(`/api/message-status?responseId=${encodeURIComponent(responseId)}`, {
-        headers: { "X-Foundry-Authorization": `Bearer ${token}` },
-      });
-
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(`itc-plus could not answer that (HTTP ${res.status}). ${errText}`);
+      let res;
+      try {
+        const token = await getAccessToken();
+        res = await fetch(`/api/message-status?responseId=${encodeURIComponent(responseId)}`, {
+          headers: { "X-Foundry-Authorization": `Bearer ${token}` },
+        });
+      } catch (err) {
+        res = null;
       }
+
+      // A single slow/failed status check (e.g. a transient Static Web Apps 500) shouldn't
+      // abandon an answer the agent is still producing — only give up on a 4xx or a run of failures.
+      if (!res || !res.ok) {
+        const status = res ? res.status : "network";
+        const errText = res ? await res.text() : "";
+        const isClientError = res && res.status >= 400 && res.status < 500;
+        consecutiveFailures++;
+        if (isClientError || consecutiveFailures >= 4) {
+          throw new Error(`itc-plus could not answer that (HTTP ${status}). ${errText}`);
+        }
+        continue;
+      }
+      consecutiveFailures = 0;
 
       const data = await res.json();
       if (data.done) return data.text || "(no response text returned)";
