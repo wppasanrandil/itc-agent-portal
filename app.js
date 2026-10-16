@@ -218,9 +218,19 @@
     return div;
   }
 
+  // Foundry occasionally returns a transient 5xx ("The server had an error while processing
+  // your request") that succeeds on a second try — retry those quietly instead of surfacing them.
+  async function fetchWithRetry(url, options, retries = 2) {
+    for (let attempt = 0; ; attempt++) {
+      const res = await fetch(url, options);
+      if (res.status < 500 || attempt >= retries) return res;
+      await sleep(2000 * (attempt + 1));
+    }
+  }
+
   async function ensureConversation(token) {
     if (conversationId) return conversationId;
-    const res = await fetch("/api/conversation", {
+    const res = await fetchWithRetry("/api/conversation", {
       method: "POST",
       // Not "Authorization" — Static Web Apps' managed Functions integration overwrites that
       // header with its own internal platform token before the function ever sees it.
@@ -308,7 +318,7 @@
       const token = await getAccessToken();
       const convId = await ensureConversation(token);
 
-      const res = await fetch("/api/message", {
+      const res = await fetchWithRetry("/api/message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
