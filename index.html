@@ -4,18 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ITC | itc-plus Trade Intelligence Assistant</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" />
+  <script>
+    // Applied before first paint so the page never flashes the wrong theme.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("itc_theme"); } catch (e) {}
+      var dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (dark) document.documentElement.classList.add("dark");
+    })();
+  </script>
   <link rel="stylesheet" href="app.css" />
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
-      <span class="brand-mark">ITC</span>
+      <img class="brand-logo" src="logo.png" alt="International Tea Committee" width="48" height="48" />
       <div class="brand-text">
         <strong>International Tea Committee</strong>
         <span>itc-plus &middot; Trade Intelligence Assistant</span>
       </div>
     </div>
     <div class="account" id="account-area">
+      <button type="button" class="theme-toggle" id="theme-toggle" title="Switch light/dark theme" aria-label="Switch light/dark theme">◐</button>
       <button id="sign-in-btn" class="btn btn-primary">Sign in with your inttea.com account</button>
       <div id="signed-in-info" class="signed-in-info" hidden>
         <span id="user-name"></span>

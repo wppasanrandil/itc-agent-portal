@@ -36,6 +36,13 @@
     modalContent.innerHTML = "";
   }
 
+  document.getElementById("theme-toggle").addEventListener("click", () => {
+    const dark = document.documentElement.classList.toggle("dark");
+    try {
+      localStorage.setItem("itc_theme", dark ? "dark" : "light");
+    } catch {}
+  });
+
   modalClose.addEventListener("click", closeModal);
   modalBackdrop.addEventListener("click", (e) => {
     if (e.target === modalBackdrop) closeModal();
